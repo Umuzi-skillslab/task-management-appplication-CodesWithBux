@@ -204,7 +204,18 @@ export function cloneTaskList(tasks = taskList) {
   });
 }
 
+export function snapshotTaskList(tasks = taskList) {
+  assertArray(tasks, 'Tasks');
+  return tasks.map((task) => ({ ...task }));
+}
 
+export function createTasksFromTitles(...titles) {
+  return titles.map((title) => new Task(title, '', 3));
+}
+
+export function resetTasks() {
+  taskList.length = 0;
+}
 
 
 
