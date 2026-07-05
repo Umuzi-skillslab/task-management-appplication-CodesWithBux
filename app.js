@@ -146,15 +146,15 @@ export function countCompletedTasks(tasks = [], index = 0) {
   return currentCompleted + countCompletedTasks(tasks, index + 1);
 }
 
-// Function with Math object issues
-function calculateAveragePriority() {
-    var total = 0;
-    // Missing: check for empty array
-    for (var i = 0; i < taskList.length; i++) {
-        total = total + taskList[i].priority;
-    }
-    // Should use Math.round or toFixed
-    return total / taskList.length;
+export function calculateAveragePriority(tasks = taskList) {
+  assertArray(tasks, 'Tasks');
+
+  if (tasks.length === 0) {
+    return 0;
+  }
+
+  const totalPriority = tasks.reduce((total, { priority }) => total + normalizePriority(priority), 0);
+  return Number((totalPriority / tasks.length).toFixed(2));
 }
 
 // Filter function with errors
