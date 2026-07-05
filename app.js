@@ -137,16 +137,13 @@ export function mergeTasks(list1 = [], list2 = [], ...otherLists) {
   return [...list1, ...list2, ...otherLists.flat()];
 }
 
-// Recursive function with error
-function countCompletedTasks(tasks, index) {
-    // Missing: base case check
-    // Missing: null/undefined check
-    
-    if (tasks[index].completed) {
-        return 1 + countCompletedTasks(tasks, index + 1);
-    } else {
-        return countCompletedTasks(tasks, index + 1);
-    }
+export function countCompletedTasks(tasks = [], index = 0) {
+  if (!Array.isArray(tasks) || index >= tasks.length) {
+    return 0;
+  }
+
+  const currentCompleted = tasks[index]?.completed === true ? 1 : 0;
+  return currentCompleted + countCompletedTasks(tasks, index + 1);
 }
 
 // Function with Math object issues
