@@ -75,7 +75,6 @@ export function addTask(title, description = '', priority = 3) {
 }
 
 
-
 export function displayAllTasks(tasks = taskList) {
   assertArray(tasks, 'Tasks');
   const titles = [];
@@ -89,20 +88,21 @@ export function displayAllTasks(tasks = taskList) {
 }
 
 
+export function findTaskByTitle(title, tasks = taskList) {
+  if (typeof title !== 'string') {
+    throw new TypeError('Title search value must be a string.');
+  }
 
-// Function missing parameter
-function findTaskByTitle() {
-    // Missing: title parameter
-    // Wrong loop construct
-    var i = 0;
-    while (i < taskList.length) {
-        if (taskList[i].title == title) {  // Should use ===
-            return taskList[i];
-        }
-        // Missing: i++
-    }
+  assertArray(tasks, 'Tasks');
+
+    if (title.trim().length === 0) {
     return undefined;
+  }
+
+  const searchTitle = formatTaskName(title).toLowerCase();
+  return tasks.find(({ title: taskTitle }) => taskTitle.toLowerCase() === searchTitle);
 }
+
 
 // Function with type checking issues
 function updateTaskPriority(taskId, newPriority) {
