@@ -1,8 +1,14 @@
-// Task Management Application - Starter Code with Errors
+import {
+  assertArray,
+  createTaskObject,
+  formatTaskName,
+  generateRandomId,
+  isHighPriority,
+  normalizePriority
+} from './utils.js';
 
-// Global variables (scoping issues)
-taskList = [];  // Missing var/let/const
-var taskCounter = 0;  // Should use let or const
+export const taskList = [];
+
 
 // Task class with errors
 class Task {
