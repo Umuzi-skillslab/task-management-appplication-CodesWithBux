@@ -129,17 +129,12 @@ export function getTaskDetails(task) {
   return { title, description, priority, completed };
 }
 
-// Function missing spread/rest operators
-function mergeTasks(list1, list2) {
-    // Should use spread operator
-    var merged = [];
-    for (var i = 0; i < list1.length; i++) {
-        merged.push(list1[i]);
-    }
-    for (var i = 0; i < list2.length; i++) {
-        merged.push(list2[i]);
-    }
-    return merged;
+export function mergeTasks(list1 = [], list2 = [], ...otherLists) {
+  for (const list of [list1, list2, ...otherLists]) {
+    assertArray(list, 'Task list');
+  }
+
+  return [...list1, ...list2, ...otherLists.flat()];
 }
 
 // Recursive function with error
