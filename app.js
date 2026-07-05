@@ -64,21 +64,21 @@ export class SubTask extends Task {
 }
 
 
-
-
-
-
-
-
-// Functions with errors
-
-// Function with no error handling
-function addTask(title, description, priority) {
-    var newTask = new Task(title, description, priority);  // Should use const
+export function addTask(title, description = '', priority = 3) {
+  try {
+    const newTask = new Task(title, description, priority);
     taskList.push(newTask);
-    taskCounter++;
     return newTask;
+  } catch (error) {
+    throw new Error(`Could not add task: ${error.message}`);
+  }
 }
+
+
+
+
+
+
 
 // Function with incorrect loop
 function displayAllTasks() {
