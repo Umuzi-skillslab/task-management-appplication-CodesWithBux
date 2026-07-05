@@ -10,23 +10,51 @@ import {
 export const taskList = [];
 
 
-// Task class with errors
-class Task {
-    constructor(title, description, priority) {
-        this.title = title;
-        this.description = description;
-        this.priority = priority;
-        this.completed = false;
-        // Missing: id property
+export class Task {
+  constructor(title, description = '', priority = 3, id = generateRandomId()) {
+    const preparedTask = createTaskObject(title, description, priority);
+
+    if (typeof id !== 'string' && typeof id !== 'number') {
+      throw new TypeError('Task id must be a string or number.');
     }
-    
-    // Missing: method to toggle completion
-    
-    getInfo() {
-        // Wrong string concatenation - should use template literals
-        return "Task: " + this.title + " - Priority: " + this.priority;
+
+    this.id = id;
+    this.title = preparedTask.title;
+    this.description = preparedTask.description;
+    this.priority = preparedTask.priority;
+    this.completed = false;
+    this.createdAt = new Date().toISOString();
+  }
+
+  toggleCompletion(forceValue) {
+    if (forceValue !== undefined && typeof forceValue !== 'boolean') {
+      throw new TypeError('Completion value must be boolean when provided.');
     }
+
+    this.completed = forceValue ?? !this.completed;
+    return this.completed;
+  }
+
+  getInfo() {
+    const status = this.completed ? 'completed' : 'pending';
+    return `Task: ${this.title} - Priority: ${this.priority} - Status: ${status}`;
+  }
+
+  toObject() {
+    const { id, title, description, priority, completed, createdAt } = this;
+    return { id, title, description, priority, completed, createdAt };
+  }
 }
+
+
+
+
+
+
+
+
+
+
 
 // Subtask class with inheritance issues
 class SubTask extends Task {
@@ -35,6 +63,14 @@ class SubTask extends Task {
         this.parentTask = parentTask;
     }
 }
+
+
+
+
+
+
+
+
 
 // Functions with errors
 
