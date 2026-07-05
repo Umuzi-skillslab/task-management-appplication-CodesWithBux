@@ -217,6 +217,84 @@ export function resetTasks() {
   taskList.length = 0;
 }
 
+export const TaskManager = {
+  tasks: taskList,
+
+  add(title, description = '', priority = 3) {
+    return addTask(title, description, priority);
+  },
+
+  removeTask(taskId) {
+    const originalLength = this.tasks.length;
+    const remainingTasks = this.tasks.filter(({ id }) => id !== taskId);
+    taskList.length = 0;
+    taskList.push(...remainingTasks);
+    this.tasks = taskList;
+    return this.tasks.length < originalLength;
+  },
+
+  toggleTask(taskId) {
+    const task = this.findById(taskId);
+    return task ? task.toggleCompletion() : false;
+  },
+
+  findById(taskId) {
+    return this.tasks.find(({ id }) => id === taskId);
+  },
+
+  getCompletedTasks() {
+    return this.tasks.filter(({ completed }) => completed === true);
+  },
+
+  getPendingTasks() {
+    return this.tasks.filter(({ completed }) => completed === false);
+  },
+
+  getHighPriorityTasks() {
+    return this.tasks.filter(isHighPriority);
+  },
+
+  getTaskTitles() {
+    return this.tasks.map(({ title }) => title);
+  },
+
+  getTotalTasks() {
+    return this.tasks.length;
+  },
+
+  getAveragePriority() {
+    return calculateAveragePriority(this.tasks);
+  },
+
+  replaceAll(tasks) {
+    assertArray(tasks, 'Tasks');
+
+    // Rebuild Task instances from plain objects. A single malformed record
+    // (e.g. an empty title from hand-edited localStorage) must not abort the
+    // whole load, so each record is constructed defensively and bad ones are skipped.
+    const restoredTasks = [];
+    for (const record of tasks) {
+      try {
+        const { title, description = '', priority = 3, id, completed = false } = record ?? {};
+        const task = new Task(title, description, priority, id ?? generateRandomId());
+        task.completed = completed === true;
+        restoredTasks.push(task);
+      } catch (error) {
+        console.warn(`Skipped an invalid stored task: ${error.message}`);
+      }
+    }
+
+    taskList.length = 0;
+    taskList.push(...restoredTasks);
+    this.tasks = taskList;
+    return cloneTaskList(taskList);
+  }
+};
+
+
+
+
+
 
 
 
