@@ -76,17 +76,19 @@ export function addTask(title, description = '', priority = 3) {
 
 
 
+export function displayAllTasks(tasks = taskList) {
+  assertArray(tasks, 'Tasks');
+  const titles = [];
 
+  for (const [index, task] of tasks.entries()) {
+    titles.push(task.title);
+    console.log(`${index + 1}. ${task.id}: ${task.title}`);
+  }
 
-
-
-// Function with incorrect loop
-function displayAllTasks() {
-    // Wrong loop - should use for-of
-    for (var i = 0; i <= taskList.length; i++) {  // Off-by-one error
-        console.log(taskList[i].title);
-    }
+  return titles;
 }
+
+
 
 // Function missing parameter
 function findTaskByTitle() {
