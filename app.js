@@ -120,20 +120,13 @@ export function updateTaskPriority(taskId, newPriority, tasks = taskList) {
   return true;
 }
 
-// Function that should use destructuring but doesn't
-function getTaskDetails(task) {
-    // Should destructure task properties
-    var title = task.title;
-    var description = task.description;
-    var priority = task.priority;
-    var completed = task.completed;
-    
-    return {
-        title: title,
-        description: description,
-        priority: priority,
-        completed: completed
-    };
+export function getTaskDetails(task) {
+  if (typeof task !== 'object' || task === null) {
+    throw new TypeError('Task details require a task object.');
+  }
+
+  const { title, description, priority, completed } = task;
+  return { title, description, priority, completed };
 }
 
 // Function missing spread/rest operators
