@@ -47,23 +47,21 @@ export class Task {
 }
 
 
+export class SubTask extends Task {
+  constructor(title, description = '', priority = 3, parentTask, id = generateRandomId('subtask')) {
+    super(title, description, priority, id);
 
-
-
-
-
-
-
-
-
-// Subtask class with inheritance issues
-class SubTask extends Task {
-    constructor(title, description, priority, parentTask) {
-        // Missing: super() call
-        this.parentTask = parentTask;
+    if (!(parentTask instanceof Task) && typeof parentTask !== 'string' && typeof parentTask !== 'number') {
+      throw new TypeError('SubTask parent must be a Task instance, string id, or numeric id.');
     }
-}
 
+    this.parentTaskId = parentTask instanceof Task ? parentTask.id : parentTask;
+  }
+
+  getInfo() {
+    return `${super.getInfo()} - Parent: ${this.parentTaskId}`;
+  }
+}
 
 
 
