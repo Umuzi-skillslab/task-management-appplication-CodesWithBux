@@ -193,3 +193,25 @@ export function sortTasksByPriority(tasks = taskList) {
   assertArray(tasks, 'Tasks');
   return [...tasks].sort((firstTask, secondTask) => secondTask.priority - firstTask.priority);
 }
+
+export function cloneTaskList(tasks = taskList) {
+  assertArray(tasks, 'Tasks');
+  return tasks.map((task) => {
+    const copy = new Task(task.title, task.description, task.priority, task.id);
+    copy.completed = task.completed === true;
+    copy.createdAt = task.createdAt;
+    return copy;
+  });
+}
+
+
+
+
+
+
+
+
+
+
+
+
