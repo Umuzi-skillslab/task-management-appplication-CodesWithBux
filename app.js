@@ -104,18 +104,20 @@ export function findTaskByTitle(title, tasks = taskList) {
 }
 
 
-// Function with type checking issues
-function updateTaskPriority(taskId, newPriority) {
-    // Missing: typeof check for parameters
-    // Missing: null/undefined validation
-    
-    for (var i = 0; i < taskList.length; i++) {
-        if (taskList[i].id = taskId) {  // Wrong operator (= instead of ===)
-            taskList[i].priority = newPriority;
-            return true;
-        }
-    }
+export function updateTaskPriority(taskId, newPriority, tasks = taskList) {
+  if (typeof taskId !== 'string' && typeof taskId !== 'number') {
+    throw new TypeError('Task id must be a string or number.');
+  }
+
+  assertArray(tasks, 'Tasks');
+  const task = tasks.find(({ id }) => id === taskId);
+
+  if (!task) {
     return false;
+  }
+
+  task.priority = normalizePriority(newPriority);
+  return true;
 }
 
 // Function that should use destructuring but doesn't
