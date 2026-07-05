@@ -157,29 +157,39 @@ export function calculateAveragePriority(tasks = taskList) {
   return Number((totalPriority / tasks.length).toFixed(2));
 }
 
-// Filter function with errors
-function getHighPriorityTasks(minPriority) {
-    var highPriority = [];
-    // Should use array methods (filter)
-    for (var i = 0; i < taskList.length; i++) {
-        if (taskList[i].priority > minPriority) {
-            highPriority.push(taskList[i]);
-        }
-    }
-    return highPriority;
+export function getHighPriorityTasks(minPriority = 3, tasks = taskList) {
+  assertArray(tasks, 'Tasks');
+  const minimum = normalizePriority(minPriority);
+  return tasks.filter((task) => normalizePriority(task.priority) > minimum);
 }
 
-// Object with missing methods
-var TaskManager = {
-    tasks: taskList,
-    
-    // Missing: method to add task using functional approach
-    // Missing: method using array methods (map, filter, reduce)
-    
-    getTotalTasks: function() {
-        return this.tasks.length;
-    }
-};
+export function getTaskTitles(tasks = taskList) {
+  assertArray(tasks, 'Tasks');
+  return tasks.map(({ title }) => title);
+}
 
-// Export issues - should be a module
-// Missing: proper module exports
+export function hasCompletedTask(tasks = taskList) {
+  assertArray(tasks, 'Tasks');
+  return tasks.some(({ completed }) => completed === true);
+}
+
+export function allTasksHaveTitles(tasks = taskList) {
+  assertArray(tasks, 'Tasks');
+  return tasks.every(({ title }) => typeof title === 'string' && title.trim().length > 0);
+}
+
+
+export function filterTasksBy(tasks, predicate) {
+  assertArray(tasks, 'Tasks');
+
+  if (typeof predicate !== 'function') {
+    throw new TypeError('Predicate must be a function.');
+  }
+
+  return tasks.filter(predicate);
+}
+
+export function sortTasksByPriority(tasks = taskList) {
+  assertArray(tasks, 'Tasks');
+  return [...tasks].sort((firstTask, secondTask) => secondTask.priority - firstTask.priority);
+}
