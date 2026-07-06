@@ -191,24 +191,66 @@ export function updateStatistics(row = document.querySelector('#stat-row')) {
 }
 
 
+export function handleTaskClick(event) {
+  const actionButton = event.target.closest('[data-action]');
+  const taskElement = event.target.closest('[data-task-id]');
 
+  if (!actionButton || !taskElement) {
+    return false;
+  }
 
+  const { action } = actionButton.dataset;
+  const { taskId } = taskElement.dataset;
 
+  if (action === 'toggle') {
+    TaskManager.toggleTask(taskId);
+  }
 
+  if (action === 'delete') {
+    TaskManager.removeTask(taskId);
+  }
 
-// Function with event handling issues
-function handleTaskClick(event) {
-    // Missing: event.target check
-    // Missing: proper event delegation
-    
-    var taskId = event.target.id;  // Wrong way to get task ID
-    
-    // Should toggle task completion
-    console.log("Task clicked: " + taskId);
+  saveState();
+  displayTasks();
+  return true;
 }
 
-// Missing: JSON conversion functions
-// Missing: functions to save/load tasks from localStorage
+// Update the visible filter and re-render.
+export function handleFilterChange(event) {
+  currentFilter = event.target.value;
+  displayTasks();
+}
 
-// Initialize (wrong placement - should use DOMContentLoaded)
-setupEventListeners();
+// Load saved tasks on startup. Loading must never break initialisation.
+export function loadStoredTasks() {
+  try {
+    const storedTasks = loadTasksFromStorage();
+    if (storedTasks.length > 0) {
+      TaskManager.replaceAll(storedTasks);
+    }
+    displayTasks();
+    return storedTasks.length;
+  } catch (error) {
+    console.error(`Could not load saved tasks: ${error.message}`);
+    displayTasks();
+    return 0;
+  }
+}
+
+// Remove every completed task, then save and re-render.
+export function handleClearCompleted() {
+  for (const completedTask of TaskManager.getCompletedTasks()) {
+    TaskManager.removeTask(completedTask.id);
+  }
+
+  saveState();
+  displayTasks();
+  return taskList.length;
+}
+
+// Initialise after the DOM is ready (fixes the starter's premature top-level call).
+if (typeof document !== 'undefined') {
+  document.addEventListener('DOMContentLoaded', () => setupEventListeners(document));
+}
+
+
