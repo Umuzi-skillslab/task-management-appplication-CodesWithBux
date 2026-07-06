@@ -46,20 +46,48 @@ function saveState() {
 }
 
 
+export function setupEventListeners(documentRef = document) {
+  const { form, taskListContainer, filterSelect, clearCompletedButton } = selectElements(documentRef);
+  let listenerCount = 0;
 
+  // 1. Submitting the form adds a task (and auto-saves).
+  if (form) {
+    form.addEventListener('submit', handleAddTask);
+    listenerCount += 1;
+  }
 
+  // 2. One delegated listener handles every task's buttons.
+  if (taskListContainer) {
+    taskListContainer.addEventListener('click', handleTaskClick);
+    listenerCount += 1;
+  }
 
-// Missing: proper DOM selectors
-function setupEventListeners() {
-    // Wrong selector method
-    var addButton = document.getElementById(".add-task-btn");  // Wrong - mixing ID and class
-    var taskInput = document.querySelector("task-input");  // Missing #
-    
-    // Missing: null checks before adding listeners
-    addButton.addEventListener("click", handleAddTask);
-    
-    // Missing: other event listeners for form submission, etc.
+  // 3. Changing the filter re-renders the visible list.
+  if (filterSelect) {
+    filterSelect.addEventListener('change', handleFilterChange);
+    listenerCount += 1;
+  }
+
+  // 4. Clear-completed removes all finished tasks at once.
+  if (clearCompletedButton) {
+    clearCompletedButton.addEventListener('click', handleClearCompleted);
+    listenerCount += 1;
+  }
+
+  // 5. Safety net: store the latest state before the page unloads.
+  window.addEventListener('beforeunload', saveState);
+  listenerCount += 1;
+
+  loadStoredTasks();
+  return listenerCount;
 }
+
+
+
+
+
+
+
 
 // Function with DOM manipulation errors
 function handleAddTask() {
