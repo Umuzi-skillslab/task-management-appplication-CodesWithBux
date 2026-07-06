@@ -49,8 +49,6 @@ function saveState() {
 
 
 
-
-
 // Missing: proper DOM selectors
 function setupEventListeners() {
     // Wrong selector method
