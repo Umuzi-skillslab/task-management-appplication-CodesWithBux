@@ -20,3 +20,35 @@ export function saveTasksToStorage(tasks, storageOverride) {
     return false;
   }
 }
+
+export function loadTasksFromStorage(storageOverride) {
+  const storage = getStorage(storageOverride);
+
+  if (!storage || typeof storage.getItem !== 'function') {
+    return [];
+  }
+
+  try {
+    return fromTaskJSON(storage.getItem(STORAGE_KEY));
+  } catch (error) {
+    return [];
+  }
+}
+
+
+export function clearTasksFromStorage(storageOverride) {
+  const storage = getStorage(storageOverride);
+
+  if (!storage || typeof storage.removeItem !== 'function') {
+    return false;
+  }
+
+  try {
+    storage.removeItem(STORAGE_KEY);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+
