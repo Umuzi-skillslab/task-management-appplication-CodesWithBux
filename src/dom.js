@@ -118,26 +118,83 @@ function getVisibleTasks() {
   return taskList;
 }
 
+// Render the task list.
+export function displayTasks(container = document.querySelector('#task-list')) {
+  if (!container) {
+    return false;
+  }
 
+  const visibleTasks = getVisibleTasks();
 
+  if (visibleTasks.length === 0) {
+    const label = currentFilter === 'all' ? '' : `${currentFilter} `;
+    container.innerHTML = `<p class="empty-state">No ${label}tasks yet &mdash; add your first one above!</p>`;
+    updateStatistics();
+    return true;
+  }
 
-// Function that should use better selectors
-function displayTasks() {
-    var container = document.getElementById("task-list");
-    
-    // Should clear existing content first
-    // Missing: null check
-    
-    // Inefficient - should use template literals and insertAdjacentHTML
-    for (var i = 0; i < taskList.length; i++) {
-        var div = document.createElement("div");
-        div.innerHTML = "<h3>" + taskList[i].title + "</h3>";
-        div.innerHTML = div.innerHTML + "<p>" + taskList[i].description + "</p>";
-        container.appendChild(div);
-        
-        // Missing: task ID, completion status, event handlers for delete/complete
-    }
+  container.innerHTML = visibleTasks
+    .map(({ id, title, description, priority, completed }) => {
+      const badge = priorityLabel(priority);
+      return `
+      <article class="task ${completed ? 'task--completed' : ''}" data-task-id="${escapeHTML(id)}" data-priority="${escapeHTML(priority)}">
+        <div class="task-body">
+          <div class="task-top">
+            <h3>${escapeHTML(title)}</h3>
+            <span class="pill pill-${badge.cls}">${badge.text}</span>
+          </div>
+          <p class="task-desc">${escapeHTML(description || 'No description')}</p>
+        </div>
+        <div class="task-actions">
+          <button type="button" class="btn-toggle" data-action="toggle">${completed ? 'Undo' : 'Done'}</button>
+          <button type="button" class="btn-delete" data-action="delete">Delete</button>
+        </div>
+      </article>`;
+    })
+    .join('');
+
+  updateStatistics();
+  return true;
 }
+
+export function updateStatistics(row = document.querySelector('#stat-row')) {
+  if (!row) {
+    return false;
+  }
+
+  const totalTasks = taskList.length;
+  const completedTasks = countCompletedTasks(taskList);
+  const pendingTasks = totalTasks - completedTasks;
+  const completionRate = totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
+
+  row.innerHTML = `
+    <div class="stat-item stat-done">
+      <span class="stat-num">${completedTasks}</span>
+      <span class="stat-label">Done</span>
+    </div>
+    <div class="stat-item stat-pending">
+      <span class="stat-num">${pendingTasks}</span>
+      <span class="stat-label">Pending</span>
+    </div>
+    <div class="stat-item stat-rate">
+      <span class="stat-num">${completionRate}<small>%</small></span>
+      <span class="stat-label">Completion rate</span>
+    </div>
+  `;
+
+  const savedCount = document.querySelector('#saved-count');
+  if (savedCount) {
+    savedCount.textContent = totalTasks === 1 ? '1 task saved' : `${totalTasks} tasks saved`;
+  }
+
+  return true;
+}
+
+
+
+
+
+
 
 // Function with event handling issues
 function handleTaskClick(event) {
