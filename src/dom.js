@@ -83,30 +83,43 @@ export function setupEventListeners(documentRef = document) {
 }
 
 
+// Add a new task from the form, then clear the inputs. Adding auto-saves.
+export function handleAddTask(event) {
+  event?.preventDefault?.();
+  const { titleInput, descriptionInput, priorityInput } = selectElements();
 
+  if (!titleInput || !descriptionInput || !priorityInput) {
+    return false;
+  }
 
-
-
-
-
-// Function with DOM manipulation errors
-function handleAddTask() {
-    var titleInput = document.getElementById("title");
-    var descInput = document.getElementById("description");
-    
-    // No validation
-    // Should use event.preventDefault() if form
-    
-    var title = titleInput.value;
-    var description = descInput.value;
-    
-    // Missing: priority input
-    
-    addTask(title, description, 1);
+  try {
+    addTask(titleInput.value, descriptionInput.value, priorityInput.value);
+    saveState();
+    titleInput.value = '';
+    descriptionInput.value = '';
+    priorityInput.value = '3';
+    titleInput.focus();
     displayTasks();
-    
-    // Missing: clear inputs after adding
+    return true;
+  } catch (error) {
+    alert(error.message);
+    return false;
+  }
 }
+
+// Return the tasks matching the current filter.
+function getVisibleTasks() {
+  if (currentFilter === 'completed') {
+    return taskList.filter((task) => task.completed);
+  }
+  if (currentFilter === 'pending') {
+    return taskList.filter((task) => !task.completed);
+  }
+  return taskList;
+}
+
+
+
 
 // Function that should use better selectors
 function displayTasks() {
