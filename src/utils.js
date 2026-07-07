@@ -51,34 +51,28 @@ export function normalizePriority(priority) {
   return PRIORITY_VALUES[lowerPriority] ?? Number(priority);
 }
 
-
-
-
-
-// Bug: Incorrect Math object usage
-function generateRandomId() {
-    return Math.random();  // Bug: Returns decimal, not integer
+export function generateRandomId(prefix = 'task') {
+  assertString(prefix, 'ID prefix');
+  const safePrefix = prefix.trim() || 'task';
+  const randomNumber = Math.floor(Math.random() * 1_000_000);
+  return `${safePrefix}-${Date.now()}-${randomNumber}`;
 }
 
-// Bug: Poor string manipulation
-function formatTaskName(name) {
-    // Bug: Not using string methods properly
-    var result = name;
-    return result;  // Should capitalize, trim, etc.
+export function isHighPriority(task) {
+  if (typeof task !== 'object' || task === null) {
+    return false;
+  }
+
+  try {
+    return normalizePriority(task.priority) >= 4;
+  } catch (error) {
+    return false;
+  }
 }
 
-// Bug: Incorrect boolean logic
-function isHighPriority(task) {
-    if (task.priority == "high") {  // Bug: Using ==
-        return "yes";  // Bug: Should return boolean
-    }
-    return "no";
-}
-
-// Missing: Class definitions
-// Missing: Inheritance example
-// Missing: Module exports
-// Missing: Proper use of operators (logical, comparison)
-// Missing: Recursion
-// Missing: Functional programming patterns
-// Missing: Proper scope demonstration
+export function toTaskJSON(data) {
+  try {
+    return JSON.stringify(data);
+  } catch (error) {
+    throw new Error(`Could not convert tasks to JSON: ${error.message}`);
+  }
