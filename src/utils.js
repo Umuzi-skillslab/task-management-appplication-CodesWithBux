@@ -76,3 +76,4 @@ export function toTaskJSON(data) {
   } catch (error) {
     throw new Error(`Could not convert tasks to JSON: ${error.message}`);
   }
+}  
