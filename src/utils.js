@@ -76,4 +76,36 @@ export function toTaskJSON(data) {
   } catch (error) {
     throw new Error(`Could not convert tasks to JSON: ${error.message}`);
   }
-}  
+} 
+
+export function fromTaskJSON(jsonText) {
+  if (jsonText === null || jsonText === undefined || jsonText === '') {
+    return [];
+  }
+
+  if (typeof jsonText !== 'string') {
+    throw new TypeError('Stored task data must be a JSON string.');
+  }
+
+  try {
+    const parsedData = JSON.parse(jsonText);
+    return Array.isArray(parsedData) ? parsedData : [];
+  } catch (error) {
+    throw new Error(`Could not parse stored task data: ${error.message}`);
+  }
+}
+
+// This pure helper prepares task values before a Task instance is created.
+export function createTaskObject(title, description = '', priority = 3) {
+  return {
+    title: formatTaskName(title),
+    description: typeof description === 'string' ? description.trim() : '',
+    priority: normalizePriority(priority),
+    completed: false
+  };
+}
+
+
+
+
+
