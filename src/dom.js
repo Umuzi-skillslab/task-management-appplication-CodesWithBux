@@ -128,7 +128,7 @@ export function displayTasks(container = document.querySelector('#task-list')) {
 
   if (visibleTasks.length === 0) {
     const label = currentFilter === 'all' ? '' : `${currentFilter} `;
-    container.innerHTML = `<p class="empty-state">No ${label}tasks yet &mdash; add your first one above!</p>`;
+    container.innerHTML = `<p class="empty-state">No ${label}tasks yet &ndash; add your first one above!</p>`;
     updateStatistics();
     return true;
   }

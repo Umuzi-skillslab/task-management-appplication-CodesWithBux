@@ -41,7 +41,7 @@ body {
 }
 
 .container {
-  width: min(944px, calc(100% - 64px));
+  width: min(760px, calc(100% - 64px));
   margin: 0 auto;
   display: flex;
   flex-direction: column;
