@@ -24,6 +24,30 @@ import {
 import { clearTasksFromStorage, loadTasksFromStorage, saveTasksToStorage, STORAGE_KEY } from '../src/storage.js';
 import { formatTaskName, fromTaskJSON, isHighPriority, toTaskJSON } from '../src/utils.js';
 
+function createMemoryStorage() {
+  const store = new Map();
+  return {
+    setItem(key, value) {
+      store.set(key, String(value));
+    },
+    getItem(key) {
+      return store.has(key) ? store.get(key) : null;
+    },
+    removeItem(key) {
+      store.delete(key);
+    }
+  };
+}
+
+beforeEach(() => {
+  resetTasks();
+});
+
+
+
+
+
+
 
 describe('Task Class', () => {
     test('should create a task', () => {
