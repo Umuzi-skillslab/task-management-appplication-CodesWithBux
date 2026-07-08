@@ -159,3 +159,51 @@ describe('TaskManager object', () => {
   });
 });
 
+
+describe('Utilities, JSON, storage and edge cases', () => {
+  test('formats task names', () => {
+    expect(formatTaskName('  clean   room  ')).toBe('Clean room');
+  });
+
+  test('serializes and parses JSON data', () => {
+    const json = toTaskJSON([{ title: 'Saved' }]);
+    expect(fromTaskJSON(json)).toEqual([{ title: 'Saved' }]);
+  });
+
+  test('saves and loads tasks from localStorage-compatible storage', () => {
+    const storage = createMemoryStorage();
+    const task = new Task('Storage', '', 4, 's1');
+    expect(saveTasksToStorage([task.toObject()], storage)).toBe(true);
+    expect(storage.getItem(STORAGE_KEY)).toContain('Storage');
+    expect(loadTasksFromStorage(storage)).toHaveLength(1);
+    expect(clearTasksFromStorage(storage)).toBe(true);
+  });
+
+  test('handles invalid JSON safely in storage loading', () => {
+    const storage = createMemoryStorage();
+    storage.setItem(STORAGE_KEY, '{broken json');
+    expect(loadTasksFromStorage(storage)).toEqual([]);
+  });
+
+  test('rejects invalid task titles', () => {
+    expect(() => new Task('', '', 3)).toThrow('Task name cannot be empty');
+  });
+
+  test('rejects invalid priority values', () => {
+    expect(() => new Task('Invalid', '', 9)).toThrow('Priority must be');
+  });
+
+  test('returns false for non-object high priority checks', () => {
+    expect(isHighPriority(null)).toBe(false);
+  });
+
+  test('extracts task details using object destructuring', () => {
+    const task = new Task('Details', 'Read', 2, 'd1');
+    expect(getTaskDetails(task)).toEqual({
+      title: 'Details',
+      description: 'Read',
+      priority: 2,
+      completed: false
+    });
+  });
+});
