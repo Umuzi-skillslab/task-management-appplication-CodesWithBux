@@ -72,20 +72,58 @@ textarea:focus-visible {
   box-shadow: var(--shadow);
 }
 
-
-
-
-
-
-
 h1 {
-    color: #333;
-    margin-bottom: 30px;
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(1.05rem, 3.6vw, 1.9rem);
+  white-space: nowrap;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: 0.1px;
+  color: #fffaf2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.26);
+  text-rendering: optimizeLegibility;
 }
 
-.task-form {
-    margin-bottom: 20px;
+h1 .accent {
+  color: #deb94f;
+  font-style: italic;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.24);
 }
+
+.tagline {
+  margin: 12px 0 0;
+  font-size: clamp(0.88rem, 1.8vw, 1.12rem);
+  font-weight: 500;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: rgba(255, 250, 242, 0.72);
+}
+
+/* ---- Panels ---- */
+.panel {
+  background: linear-gradient(180deg, #ffffff 0%, #fffefb 100%);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  box-shadow: var(--shadow-card);
+}
+
+h2 {
+  margin: 0 0 18px;
+  font-family: var(--serif);
+  font-size: clamp(1.35rem, 2.6vw, 1.7rem);
+  line-height: 1.1;
+  font-weight: 700;
+  color: var(--plum);
+}
+
+
+.task-form { margin: 0; }
+.field { margin-bottom: 15px; }
+
+
+
 
 input, select, button {
     padding: 10px;
