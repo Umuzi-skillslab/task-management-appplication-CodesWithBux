@@ -43,22 +43,35 @@ beforeEach(() => {
   resetTasks();
 });
 
+describe('Task class and inheritance', () => {
+  test('creates a task with required properties', () => {
+    const task = new Task('test task', 'Description', 3, 't-1');
+    expect(task.id).toBe('t-1');
+    expect(task.title).toBe('Test task');
+    expect(task.completed).toBe(false);
+  });
 
+  test('returns formatted task information with template literal content', () => {
+    const task = new Task('Write tests', 'Use Jest', 5, 't-2');
+    expect(task.getInfo()).toContain('Task: Write tests - Priority: 5');
+  });
 
+  test('toggles task completion', () => {
+    const task = new Task('Toggle me', '', 2, 't-3');
+    expect(task.toggleCompletion()).toBe(true);
+    expect(task.toggleCompletion(false)).toBe(false);
+  });
 
-
-
-
-describe('Task Class', () => {
-    test('should create a task', () => {
-        var task = new Task('Test Task', 'Description', 3);
-        expect(task.title).toBe('Test Task');
-        // Missing: other property checks
-    });
-    
-    // Missing: test for getInfo method
-    // Missing: test for toggle completion
+  test('SubTask extends Task and stores parent id', () => {
+    const parent = new Task('Parent', '', 3, 'parent-1');
+    const child = new SubTask('Child', '', 2, parent, 'child-1');
+    expect(child).toBeInstanceOf(Task);
+    expect(child.parentTaskId).toBe('parent-1');
+  });
 });
+
+
+
 
 describe('Task Functions', () => {
     // Missing: beforeEach to reset taskList
