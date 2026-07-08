@@ -70,32 +70,75 @@ describe('Task class and inheritance', () => {
   });
 });
 
+describe('Task functions and array operations', () => {
+  test('adds tasks to the shared task list', () => {
+    const task = addTask('new task', 'Test', 2);
+    expect(taskList).toHaveLength(1);
+    expect(task.title).toBe('New task');
+  });
 
+  test('finds a task by title using strict matching after formatting', () => {
+    addTask('Report', 'Finish report', 3);
+    expect(findTaskByTitle('report').description).toBe('Finish report');
+  });
 
+  test('updates priority by id', () => {
+    const task = addTask('Priority task', '', 1);
+    expect(updateTaskPriority(task.id, 5)).toBe(true);
+    expect(task.priority).toBe(5);
+  });
 
-describe('Task Functions', () => {
-    // Missing: beforeEach to reset taskList
-    
-    test('should add task', () => {
-        var task = addTask('New Task', 'Test', 2);
-        // Wrong assertion - should check taskList
-        expect(task).toBeDefined();
-    });
-    
-    // Missing: test for findTaskByTitle
-    // Missing: test for updateTaskPriority
-    // Missing: test for calculateAveragePriority
-    // Missing: test for error handling
+  test('calculates average priority and returns zero for empty arrays', () => {
+    expect(calculateAveragePriority()).toBe(0);
+    addTask('One', '', 1);
+    addTask('Two', '', 5);
+    expect(calculateAveragePriority()).toBe(3);
+  });
+
+  test('filters high priority tasks', () => {
+    addTask('Low', '', 1);
+    addTask('High', '', 5);
+    expect(getHighPriorityTasks(3).map(({ title }) => title)).toEqual(['High']);
+  });
+
+  test('merges multiple task arrays with spread and rest', () => {
+    const first = [new Task('A', '', 1, 'a')];
+    const second = [new Task('B', '', 2, 'b')];
+    const third = [new Task('C', '', 3, 'c')];
+    expect(mergeTasks(first, second, third)).toHaveLength(3);
+  });
+
+  test('counts completed tasks recursively', () => {
+    const tasks = [new Task('A', '', 1, 'a'), new Task('B', '', 2, 'b')];
+    tasks[1].toggleCompletion(true);
+    expect(countCompletedTasks(tasks)).toBe(1);
+  });
+
+  test('uses map, some, every and object spread helpers', () => {
+    addTask('Alpha', '', 2);
+    addTask('Beta', '', 4).toggleCompletion(true);
+    expect(getTaskTitles()).toEqual(['Alpha', 'Beta']);
+    expect(hasCompletedTask()).toBe(true);
+    expect(allTasksHaveTitles()).toBe(true);
+    expect(cloneTaskList()[0]).not.toBe(taskList[0]);
+  });
+
+  test('demonstrates higher-order filtering', () => {
+    addTask('Low', '', 1);
+    addTask('High', '', 5);
+    const result = filterTasksBy(taskList, ({ priority }) => priority === 5);
+    expect(result).toHaveLength(1);
+  });
+
+  test('sorts tasks by priority without mutating original order', () => {
+    addTask('Low', '', 1);
+    addTask('High', '', 5);
+    expect(sortTasksByPriority()[0].title).toBe('High');
+    expect(taskList[0].title).toBe('Low');
+  });
+
+  test('creates multiple tasks with a rest parameter', () => {
+    expect(createTasksFromTitles('one', 'two', 'three')).toHaveLength(3);
+  });
 });
 
-describe('Array Operations', () => {
-    // Missing: tests for mergeTasks
-    // Missing: tests for getHighPriorityTasks
-    // Missing: tests for recursive function
-});
-
-// Missing: describe blocks for:
-// - SubTask class and inheritance
-// - Destructuring functions
-// - Spread/rest operator functions
-// - Module exports/imports
