@@ -1,6 +1,29 @@
-// Jest Tests - Starter Code with Errors and Missing Tests
+import {
+  addTask,
+  allTasksHaveTitles,
+  calculateAveragePriority,
+  cloneTaskList,
+  countCompletedTasks,
+  createTasksFromTitles,
+  filterTasksBy,
+  findTaskByTitle,
+  getHighPriorityTasks,
+  getTaskDetails,
+  getTaskTitles,
+  hasCompletedTask,
+  mergeTasks,
+  resetTasks,
+  snapshotTaskList,
+  sortTasksByPriority,
+  SubTask,
+  Task,
+  TaskManager,
+  taskList,
+  updateTaskPriority
+} from '../src/app.js';
+import { clearTasksFromStorage, loadTasksFromStorage, saveTasksToStorage, STORAGE_KEY } from '../src/storage.js';
+import { formatTaskName, fromTaskJSON, isHighPriority, toTaskJSON } from '../src/utils.js';
 
-// Missing: proper imports/requires
 
 describe('Task Class', () => {
     test('should create a task', () => {
