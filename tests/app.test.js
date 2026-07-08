@@ -207,3 +207,54 @@ describe('Utilities, JSON, storage and edge cases', () => {
     });
   });
 });
+
+
+describe('Corrected behaviours (review fixes)', () => {
+  test('cloneTaskList returns independent, fully-behaving Task instances', () => {
+    addTask('Clone me', '', 5);
+    const [clone] = cloneTaskList();
+    expect(clone).toBeInstanceOf(Task);
+    expect(typeof clone.getInfo).toBe('function');
+    expect(clone).not.toBe(taskList[0]);
+    expect(clone.id).toBe(taskList[0].id);
+  });
+
+  test('snapshotTaskList returns plain serialisable objects (no prototype)', () => {
+    addTask('Snap', '', 3);
+    const [plain] = snapshotTaskList();
+    expect(plain).not.toBeInstanceOf(Task);
+    expect(plain.title).toBe('Snap');
+  });
+
+  test('findTaskByTitle returns undefined for an empty query instead of throwing', () => {
+    addTask('Anything', '', 3);
+    expect(findTaskByTitle('')).toBeUndefined();
+    expect(findTaskByTitle('   ')).toBeUndefined();
+  });
+
+  test('replaceAll skips malformed records but keeps valid ones', () => {
+    const result = TaskManager.replaceAll([
+      { id: 'good', title: 'Valid task', priority: 3, completed: false },
+      { id: 'bad', title: '', priority: 3, completed: false }
+    ]);
+    expect(taskList).toHaveLength(1);
+    expect(taskList[0].title).toBe('Valid task');
+    expect(result).toHaveLength(1);
+  });
+
+  test('new task ids stay unique after a delete-then-reload cycle', () => {
+    // Simulate storage that has a gap from a prior deletion (task-2 removed).
+    TaskManager.replaceAll([
+      { id: 'task-1', title: 'First', priority: 3, completed: false },
+      { id: 'task-3', title: 'Third', priority: 3, completed: false }
+    ]);
+    // Adding after reload must not re-issue an existing id.
+    const added = addTask('Fourth');
+    const ids = taskList.map(({ id }) => id);
+    expect(new Set(ids).size).toBe(ids.length); // all ids distinct
+    expect(ids).not.toContain(undefined);
+    expect(taskList).toContain(added);
+  });
+});
+
+
