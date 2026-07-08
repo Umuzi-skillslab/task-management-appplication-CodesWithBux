@@ -92,7 +92,7 @@ h1 .accent {
 
 .tagline {
   margin: 12px 0 0;
-  font-size: clamp(0.88rem, 1.8vw, 1.12rem);
+  font-size: clamp(0.66rem, 1.1vw, 0.82rem);
   font-weight: 500;
   letter-spacing: 2.2px;
   text-transform: uppercase;
