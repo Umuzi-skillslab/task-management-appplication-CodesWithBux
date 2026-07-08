@@ -142,3 +142,20 @@ describe('Task functions and array operations', () => {
   });
 });
 
+
+describe('TaskManager object', () => {
+  test('adds, toggles and removes tasks through object methods', () => {
+    const task = TaskManager.add('Managed', '', 3);
+    expect(TaskManager.getTotalTasks()).toBe(1);
+    expect(TaskManager.toggleTask(task.id)).toBe(true);
+    expect(TaskManager.getCompletedTasks()).toHaveLength(1);
+    expect(TaskManager.removeTask(task.id)).toBe(true);
+  });
+
+  test('replaces stored plain objects with Task instances', () => {
+    TaskManager.replaceAll([{ id: 'x', title: 'Stored', priority: 4, completed: true }]);
+    expect(taskList[0]).toBeInstanceOf(Task);
+    expect(TaskManager.getAveragePriority()).toBe(4);
+  });
+});
+
