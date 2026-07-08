@@ -1,4 +1,29 @@
-/* Basic Styles */
+:root {
+  /* Brighter colours taken from the supplied reference image */
+  --plum: #4b1539;
+  --plum-bright: #722552;
+  --plum-deep: #331025;
+  --gold: #c79a42;
+  --gold-bright: #d7b052;
+  --cream: #fbf6ef;
+  --paper: #ffffff;
+  --paper-soft: #fffdf9;
+  --line: #ded4c8;
+  --ink: #2b2530;
+  --muted: #6e6872;
+  --placeholder: #8f8f97;
+  --olive: #237013;
+  --olive-2: #1e5f10;
+  --sage: #6f8c5b;
+  --danger: #d11e1e;
+  --radius-lg: 14px;
+  --radius-md: 8px;
+  --serif: Georgia, "Times New Roman", "Iowan Old Style", serif;
+  --sans: "Segoe UI", Inter, system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  --shadow: 0 18px 40px rgba(34, 20, 12, 0.16);
+  --shadow-card: 0 5px 16px rgba(66, 45, 30, 0.10);
+  --shadow-button: 0 8px 16px rgba(54, 13, 39, 0.30);
+}
 
 body {
     font-family: Arial, sans-serif;
