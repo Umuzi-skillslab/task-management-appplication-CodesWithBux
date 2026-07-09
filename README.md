@@ -1,9 +1,9 @@
 # Task Management System
 
-**Capstone 2 — Debug Task Manager · Phatsimo Maseng (CodesWithBux)**
+**Capstone 2 — Debug Task Manager**
 
 ## Overview
-A vanilla-JavaScript task management application rebuilt from an intentionally
+A task management application rebuilt from an intentionally
 broken starter (52 seeded errors) into a modular, validated, fully tested ES6+
 codebase. Tasks can be created (title, description, priority), marked complete,
 deleted, cleared in bulk, filtered, persisted to `localStorage`, and summarised
