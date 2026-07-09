@@ -10,7 +10,7 @@ deleted, cleared in bulk, filtered, persisted to `localStorage`, and summarised
 with done / pending / completion-rate statistics. Core logic is decoupled from
 the DOM so it can be unit tested in isolation. **30 Jest tests pass, 0 failures.**
 
-![Application running in the browser](screenshot/app-running.png)
+![Application running in the browser](screenshots/app-running.png)
 *App in the browser: form, filterable list, live statistics.*
 
 ## Errors Found (by category)
@@ -64,7 +64,7 @@ higher-order functions.
 The app uses ES6 modules, so serve `index.html` with a static server — the
 **VS Code Live Server** extension ("Go Live") is simplest. No build step needed.
 
-![DOM manipulation features working](screenshot/dom-features.png)
+![DOM manipulation features working](screenshots/dom-features.png)
 *DOM features: Completed filter, delegated buttons, updated stats.*
 
 ## How to Run the Tests
@@ -77,10 +77,10 @@ Tests run as native ES modules; `beforeEach` resets shared state.
 **Result:** `Tests: 30 passed, 30 total` (0 failures), including edge cases:
 empty title, invalid priority, malformed JSON, empty query, resilient reloads.
 
-![Jest test results — 30 passing](screenshot/tests-passing.png)
+![Jest test results — 30 passing](screenshots/tests-passing.png)
 *Jest: 1 suite, 30 tests, 0 failures.*
 
-![Browser console with no errors](screenshot/console-no-errors.png)
+![Browser console with no errors](screenshots/console-no-errors.png)
 *DevTools Console and Issues panels clear of errors.*
 
 ## Reflection
