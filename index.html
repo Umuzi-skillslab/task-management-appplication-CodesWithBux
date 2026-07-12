@@ -7,30 +7,74 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Task Management System</h1>
-        
-        <div class="add-task-section">
-            <h2>Add New Task</h2>
-            <!-- Form with issues -->
-            <input type="text" id="title" placeholder="Task Title">
-            <input type="text" id="description" placeholder="Description">
-            <!-- Missing: priority input -->
-            <button class="add-task-btn">Add Task</button>
+  <main class="container" id="app">
+    <header class="app-header">
+      <h1>Task Management <span class="accent">System</span></h1>
+      <p class="tagline">Add a task &ndash; it saves automatically.</p>
+    </header>
+
+    <!-- New task form -->
+    <section class="panel add-task-section" aria-labelledby="add-task-heading">
+      <h2 id="add-task-heading">New task</h2>
+      <form id="task-form" class="task-form">
+        <div class="field">
+          <label for="title">Task title</label>
+          <input type="text" id="title" name="title" placeholder="e.g. Finish chapter 3" required>
         </div>
-        
-        <div class="task-list" id="task-list">
-            <!-- Tasks will be displayed here -->
+        <div class="field">
+          <label for="description">Description</label>
+          <textarea id="description" name="description" placeholder="Optional details" rows="3"></textarea>
         </div>
-        
-        <div class="statistics">
-            <!-- Missing: statistics display -->
+        <div class="field">
+          <label for="priority">Priority</label>
+          <select id="priority" name="priority">
+            <option value="1">1 &ndash; Very low</option>
+            <option value="2">2 &ndash; Low</option>
+            <option value="3" selected>3 &ndash; Medium</option>
+            <option value="4">4 &ndash; High</option>
+            <option value="5">5 &ndash; Very high</option>
+          </select>
         </div>
-    </div>
+        <button type="submit" class="btn btn-primary add-task-btn">Add task</button>
+      </form>
+    </section>
+
+    <!-- Task list with a filter and a bulk clear action -->
+    <section class="panel list-section">
+      <div class="list-header">
+        <h2>Tasks</h2>
+        <label class="filter" for="filter">
+          <span>Show</span>
+          <select id="filter">
+            <option value="all">All</option>
+            <option value="pending">Pending</option>
+            <option value="completed">Completed</option>
+          </select>
+        </label>
+      </div>
+      <div class="task-list" id="task-list" aria-live="polite"></div>
+      <button type="button" id="clear-completed" class="btn btn-ghost">Clear completed</button>
+    </section>
+
+    <!-- Task overview / summary -->
+    <section class="panel stats" aria-labelledby="overview-heading">
+      <div class="list-header">
+        <h2 id="overview-heading">Task overview</h2>
+        <span class="saved-count" id="saved-count">0 tasks saved</span>
+      </div>
+      <div class="stat-row" id="stat-row" aria-live="polite"></div>
+    </section>
+  </main>
     
-    <!-- Scripts loaded in wrong order -->
-    <script src="dom.js"></script>
-    <script src="app.js"></script>
-    <!-- Missing: module script -->
+<script type="module" src="src/dom.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
